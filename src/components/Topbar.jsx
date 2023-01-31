@@ -1,4 +1,5 @@
 import React from "react";
+import { useContext } from "react";
 import {
   FaFacebookSquare,
   FaTwitterSquare,
@@ -6,8 +7,25 @@ import {
   FaPinterestSquare,
   FaSearch,
 } from "react-icons/fa";
+import { Link, useLocation } from "react-router-dom";
+import { Context } from "../context/Context";
 
 function Topbar() {
+  const location = useLocation();
+  const { user, dispatch } = useContext(Context);
+  // console.log(location);
+  // console.log(user);
+
+  const pathMatchRoute = (route) => {
+    if (route === location.pathname) {
+      return true;
+    }
+  };
+
+  const handleLogout = () => {
+    dispatch({ type: "LOGOUT" });
+  };
+
   return (
     <div className="w-full h-14 z-50 bg-white sticky top-0  font-[Josefin-Sans] border-b">
       <div className="flex items-center justify-between px-4 py-3 max-w-6xl mx-auto">
@@ -24,31 +42,95 @@ function Topbar() {
         {/* middle */}
         <div className="mr-2 md:mx-5">
           <ul className="flex items-center space-x-2 lg:space-x-10 text-sm md:text-base">
-            <li className="cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500">
-              HOME
-            </li>
-            <li className="cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500">
+            <Link to="/">
+              <li
+                className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
+                  pathMatchRoute("/") &&
+                  `underline underline-offset-4 font-semibold`
+                }`}
+              >
+                HOME
+              </li>
+            </Link>
+            <li
+              className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
+                pathMatchRoute("/about") &&
+                `underline underline-offset-4 font-semibold`
+              }`}
+            >
               ABOUT
             </li>
-            <li className="cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500">
+            <li
+              className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
+                pathMatchRoute("/contact") &&
+                `underline underline-offset-4 font-semibold`
+              }`}
+            >
               CONTACT
             </li>
-            <li className="cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500">
-              WRITE
-            </li>
-            <li className="cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500">
-              LOGOUT
-            </li>
+            <Link to="/write">
+              <li
+                className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
+                  pathMatchRoute("/write") &&
+                  `underline underline-offset-4 font-semibold`
+                }`}
+              >
+                WRITE
+              </li>
+            </Link>
+
+            {user && (
+              <li
+                onClick={handleLogout}
+                className="cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500"
+              >
+                LOGOUT
+              </li>
+            )}
           </ul>
         </div>
 
         {/* right */}
         <div className="flex items-center space-x-2">
-          <img
-            src="https://media.npr.org/assets/img/2022/11/08/ap22312071681283-0d9c328f69a7c7f15320e8750d6ea447532dff66.jpg"
-            alt="profile pic"
-            className="w-8 h-8 rounded-full cursor-pointer"
-          />
+          {user ? (
+            <>
+              <Link to="/profile">
+                <img
+                  src={
+                    user?.profilePicture ||
+                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                  }
+                  alt="profile pic"
+                  className="w-8 h-8 rounded-full cursor-pointer"
+                />
+              </Link>
+            </>
+          ) : (
+            <div className="text-sm md:text-base space-x-2 md:space-x-5">
+              <Link to="/login">
+                <span
+                  className={`cursor-pointer uppercase hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
+                    pathMatchRoute("/login") &&
+                    `underline underline-offset-4 font-semibold`
+                  }`}
+                >
+                  Login
+                </span>
+              </Link>
+
+              <Link to="/register">
+                <span
+                  className={`cursor-pointer uppercase hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
+                    pathMatchRoute("/register") &&
+                    `underline underline-offset-4 font-semibold`
+                  }`}
+                >
+                  Register
+                </span>
+              </Link>
+            </div>
+          )}
+
           <FaSearch className="cursor-pointer text-lg hidden md:inline" />
         </div>
       </div>

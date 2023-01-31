@@ -7,7 +7,7 @@ function HomePage() {
   return (
     <div>
       <Header />
-      <div className="max-w-7xl mx-auto p-4 flex gap-10 ">
+      <div className="max-w-7xl mx-auto p-4 flex gap-10  w-full">
         <Posts />
         <Sidebar />
       </div>

@@ -1,12 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
+import { Context } from "../context/Context";
 
 function Profile() {
   const [ProfilePic, setProfilePic] = useState("");
-  const [Email, setEmail] = useState("");
-  const [Username, setUsername] = useState("");
-  const [Password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const [SelectedPic, setSelectedPic] = useState(false);
+  const { user } = useContext(Context);
 
   const setProfilePicture = (e) => {
     const reader = new FileReader();
@@ -20,7 +22,7 @@ function Profile() {
     }
   };
   return (
-    <div className="w-full flex-grow mt-3 px-4 flex flex-col gap-10">
+    <div className="w-full h-screen flex-grow mt-3 px-4 flex flex-col gap-10">
       <div className="w-full flex items-center justify-between text-red-400 font-serif">
         <h2 className="text-3xl">Update Your Account</h2>
         <p className="font-bold hover:scale-105 transform duration-150 text-red-500 text-sm cursor-pointer">
@@ -36,12 +38,21 @@ function Profile() {
           <label className="font-semibold text-xl">Profile Picture</label>
           <div className="flex items-center space-x-3">
             <div className="border cursor-pointer w-24 h-24 rounded-lg bg-gray-200">
-              {SelectedPic && (
+              {SelectedPic ? (
                 <img
                   onClick={() => {
                     setSelectedPic(false);
                   }}
-                  src={ProfilePic}
+                  src={user.profilePic}
+                  alt=""
+                  className="w-full h-full rounded-lg object-cover cursor-pointer"
+                />
+              ) : (
+                <img
+                  onClick={() => {
+                    setSelectedPic(false);
+                  }}
+                  src={user.profilePicture}
                   alt=""
                   className="w-full h-full rounded-lg object-cover cursor-pointer"
                 />
@@ -67,8 +78,10 @@ function Profile() {
         <div className="flex flex-col gap-2 w-full">
           <label className="font-semibold text-xl">UserName</label>
           <input
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
             type="text"
-            placeholder="username"
+            placeholder={user?.username}
             className="outline-none border-b bg-transparent px-1 py-3 placeholder:text-lg text-lg"
           />
         </div>
@@ -76,8 +89,10 @@ function Profile() {
         <div className="flex flex-col gap-2 w-full">
           <label className="font-semibold text-xl">Email</label>
           <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
             type="email"
-            placeholder="Email"
+            placeholder={user?.email}
             className="outline-none border-b bg-transparent px-1 py-3 placeholder:text-lg text-lg"
           />
         </div>
@@ -85,6 +100,8 @@ function Profile() {
         <div className="flex flex-col gap-2 w-full">
           <label className="font-semibold text-xl">Password</label>
           <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
             type="Password"
             placeholder="Password"
             className="outline-none border-b bg-transparent px-1 py-3 placeholder:text-lg text-lg"

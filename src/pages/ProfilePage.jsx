@@ -4,7 +4,7 @@ import Sidebar from "../components/Sidebar";
 
 function ProfilePage() {
   return (
-    <div className="max-w-7xl p-4 mx-auto w-full  flex flex-col lg:flex-row h-screen gap-10">
+    <div className="max-w-7xl p-4 mx-auto w-full flex flex-col lg:flex-row  gap-10">
       <Profile />
 
       <Sidebar />

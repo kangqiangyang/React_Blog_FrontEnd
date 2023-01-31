@@ -7,6 +7,7 @@ import {
 } from "react-icons/fa";
 import axios from "axios";
 import { useEffect } from "react";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
   const [Categories, setCategories] = useState();
@@ -46,12 +47,11 @@ function Sidebar() {
 
         <ul className="text-center space-y-5 text-sm lg:text-base">
           {Categories?.map((category) => (
-            <li
-              key={category._id}
-              className="inline-block w-[50%] cursor-pointer text-lg tracking-[2px] hover:scale-105 transform duration-150 hover:font-semibold ease-in"
-            >
-              {category?.name}
-            </li>
+            <Link key={category._id} to={`/?catName=${category?.name}`}>
+              <li className="inline-block w-[50%] cursor-pointer text-lg tracking-[2px] hover:scale-105 transform duration-150 hover:font-semibold ease-in">
+                {category?.name}
+              </li>
+            </Link>
           ))}
         </ul>
       </div>
