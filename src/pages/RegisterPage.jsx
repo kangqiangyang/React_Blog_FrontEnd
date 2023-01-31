@@ -28,11 +28,11 @@ function RegisterPage() {
   };
   return (
     <div className="w-full h-screen relative flex flex-col items-center justify-center bg-register bg-no-repeat bg-cover bg-center bg-fixed gap-5">
-      <Link to="/login">
+      <a href="/login">
         <button className="absolute top-0 right-0 py-3  mr-10 mt-5 px-4 rounded-lg text-white ml-10 font-bold bg-red-400 hover:bg-red-500 active:bg-red-600">
           Login
         </button>
-      </Link>
+      </a>
 
       <div className="max-w-7xl mx-auto w-full p-4 flex flex-col items-center">
         <div className="w-full  ">

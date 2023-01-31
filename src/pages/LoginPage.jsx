@@ -37,11 +37,11 @@ function LoginPage() {
 
   return (
     <div className="w-full h-screen flex items-center justify-center bg-login bg-no-repeat bg-cover bg-center bg-fixed relative">
-      <Link to="/register">
+      <a href="/register">
         <button className=" absolute top-0 right-0 py-3  mr-10 mt-5 px-4 rounded-lg text-white ml-10 font-bold bg-green-600 hover:bg-green-500 active:bg-green-400">
           Register
         </button>
-      </Link>
+      </a>
       <div className="max-w-7xl mx-auto w-full p-4 flex flex-col items-center">
         <div className="w-full  ">
           <h1 className="text-[60px]  font-semibold font-serif text-center">

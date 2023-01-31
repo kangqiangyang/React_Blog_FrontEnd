@@ -31,7 +31,9 @@ function Post({ post }) {
         <p className="text-lg text-gray-500">
           <TimeAgo date={new Date(post.createdAt)} />
         </p>
-        <p className="text-sm text-gray-600 text-center">{post?.description}</p>
+        <p className="text-sm text-gray-600 text-center truncate w-[300px] px-10">
+          {post?.description}
+        </p>
       </div>
     </div>
   );

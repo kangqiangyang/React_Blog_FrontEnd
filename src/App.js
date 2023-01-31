@@ -31,7 +31,7 @@ function App() {
             element={user ? <WritePage /> : <Navigate to="/register" />}
           />
           <Route
-            path="/profile"
+            path="/profile/:id"
             element={user ? <ProfilePage /> : <Navigate to="/register" />}
           />
           <Route path="/posts/:postId" element={<SinglePostPage />} />

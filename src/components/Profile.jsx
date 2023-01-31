@@ -1,5 +1,7 @@
+import axios from "axios";
 import React, { useContext, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
+import { useLocation, useParams } from "react-router-dom";
 import { Context } from "../context/Context";
 
 function Profile() {
@@ -8,10 +10,13 @@ function Profile() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [SelectedPic, setSelectedPic] = useState(false);
-  const { user } = useContext(Context);
+  const { user, dispatch } = useContext(Context);
+  const [file, setFile] = useState(null);
+  const params = useParams();
 
   const setProfilePicture = (e) => {
     const reader = new FileReader();
+    setFile(e.target.files[0]);
 
     if (e.target.files[0]) {
       reader.readAsDataURL(e.target.files[0]);
@@ -21,17 +26,84 @@ function Profile() {
       };
     }
   };
+  const handleDelete = async () => {
+    try {
+      if (params) {
+        await axios
+          .delete(
+            `https://react-blog-api-ilfm.onrender.com/api/users/${params.id}`,
+            {
+              data: {
+                userId: user._id,
+                username: user.username,
+              },
+            }
+          )
+          .then((res) => {
+            dispatch({ type: "USER_DELETE_SUCCESS" });
+          });
+      }
+    } catch (error) {
+      dispatch({ type: "USER_DELETE_FAILURE" });
+    }
+  };
+
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+
+    dispatch({ type: "UPDATE_START" });
+    const updatedUser = {
+      userId: user._id,
+      username,
+      email,
+      password,
+    };
+
+    if (file) {
+      const formData = new FormData();
+      const filename = file.name;
+      formData.append("file", file);
+      formData.append("filename", filename);
+      updatedUser.profilePicture = filename;
+
+      try {
+        await axios.post(
+          `https://react-blog-api-ilfm.onrender.com/api/upload`,
+          formData
+        );
+      } catch (error) {}
+    }
+
+    try {
+      const res = await axios.put(
+        `https://react-blog-api-ilfm.onrender.com/api/users/` + user._id,
+        updatedUser
+      );
+      // console.log(res);
+      dispatch({ type: "UPDATE_SUCCESS", payload: res.data.updatedUser });
+      window.location.reload("/");
+    } catch (err) {
+      dispatch({ type: "UPDATE_FAILURE" });
+    }
+  };
+  console.log(user);
+  // console.log(params);
+
+  // console.log(ProfilePic);
   return (
     <div className="w-full h-screen flex-grow mt-3 px-4 flex flex-col gap-10">
       <div className="w-full flex items-center justify-between text-red-400 font-serif">
         <h2 className="text-3xl">Update Your Account</h2>
-        <p className="font-bold hover:scale-105 transform duration-150 text-red-500 text-sm cursor-pointer">
+        <p
+          onClick={handleDelete}
+          className="font-bold hover:scale-105 transform duration-150 text-red-500 text-sm cursor-pointer"
+        >
           Delete Account
         </p>
       </div>
 
       <form
-        action=""
+        onSubmit={handleUpdate}
         className="flex flex-col px-3 items-center gap-8 font-serif"
       >
         <div className="flex flex-col gap-2 w-full">
@@ -43,7 +115,7 @@ function Profile() {
                   onClick={() => {
                     setSelectedPic(false);
                   }}
-                  src={user.profilePic}
+                  src={ProfilePic}
                   alt=""
                   className="w-full h-full rounded-lg object-cover cursor-pointer"
                 />

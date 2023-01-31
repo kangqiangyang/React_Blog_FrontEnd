@@ -10,10 +10,11 @@ function Posts() {
   // console.log(search);
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await axios.get(
-        "https://react-blog-api-ilfm.onrender.com/api/posts" + search
-      );
-      setPosts(res.data.posts);
+      await axios
+        .get("https://react-blog-api-ilfm.onrender.com/api/posts" + search)
+        .then((res) => {
+          setPosts(res.data.posts);
+        });
     };
 
     fetchPosts();

@@ -47,11 +47,11 @@ function Sidebar() {
 
         <ul className="text-center space-y-5 text-sm lg:text-base">
           {Categories?.map((category) => (
-            <Link key={category._id} to={`/?catName=${category?.name}`}>
-              <li className="inline-block w-[50%] cursor-pointer text-lg tracking-[2px] hover:scale-105 transform duration-150 hover:font-semibold ease-in">
+            <a key={category._id} href={`/?catName=${category?.name}`}>
+              <li className="inline-block w-[50%] cursor-pointer mt-2 text-lg tracking-[2px] hover:scale-105 transform duration-150 hover:font-semibold ease-in">
                 {category?.name}
               </li>
-            </Link>
+            </a>
           ))}
         </ul>
       </div>

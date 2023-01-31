@@ -42,7 +42,7 @@ function Topbar() {
         {/* middle */}
         <div className="mr-2 md:mx-5">
           <ul className="flex items-center space-x-2 lg:space-x-10 text-sm md:text-base">
-            <Link to="/">
+            <a href="/">
               <li
                 className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
                   pathMatchRoute("/") &&
@@ -51,7 +51,7 @@ function Topbar() {
               >
                 HOME
               </li>
-            </Link>
+            </a>
             <li
               className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
                 pathMatchRoute("/about") &&
@@ -68,7 +68,7 @@ function Topbar() {
             >
               CONTACT
             </li>
-            <Link to="/write">
+            <a href="/write">
               <li
                 className={`cursor-pointer hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
                   pathMatchRoute("/write") &&
@@ -77,7 +77,7 @@ function Topbar() {
               >
                 WRITE
               </li>
-            </Link>
+            </a>
 
             {user && (
               <li
@@ -94,7 +94,7 @@ function Topbar() {
         <div className="flex items-center space-x-2">
           {user ? (
             <>
-              <Link to="/profile">
+              <a href={`/profile/${user._id}`}>
                 <img
                   src={
                     user?.profilePicture ||
@@ -103,11 +103,11 @@ function Topbar() {
                   alt="profile pic"
                   className="w-8 h-8 rounded-full cursor-pointer"
                 />
-              </Link>
+              </a>
             </>
           ) : (
             <div className="text-sm md:text-base space-x-2 md:space-x-5">
-              <Link to="/login">
+              <a href="/login">
                 <span
                   className={`cursor-pointer uppercase hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
                     pathMatchRoute("/login") &&
@@ -116,9 +116,9 @@ function Topbar() {
                 >
                   Login
                 </span>
-              </Link>
+              </a>
 
-              <Link to="/register">
+              <a href="/register">
                 <span
                   className={`cursor-pointer uppercase hover:underline hover:scale-105 hover:underline-offset-4 transform duration-150 text-gray-500 ${
                     pathMatchRoute("/register") &&
@@ -127,7 +127,7 @@ function Topbar() {
                 >
                   Register
                 </span>
-              </Link>
+              </a>
             </div>
           )}
 
