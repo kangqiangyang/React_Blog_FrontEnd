@@ -1,5 +1,16 @@
 # Getting Started with Create React App
 
+
+Backend in https://github.com/kangqiangyang8243/React_blog_Backend
+Feature:
+  - User can Login/Register a account
+  - User can browser different Blogs
+  - User can upload the blog
+  - User can delete and edit their own blogs
+  - User can update their account information
+  - User can navigate to different pages based on Categories and shows their posts which under that category
+  
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
