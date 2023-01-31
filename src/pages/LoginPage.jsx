@@ -16,7 +16,7 @@ function LoginPage() {
     dispatch({ type: "LOGIN_START" });
     try {
       await axios
-        .post(`/auth/login`, {
+        .post(`https://react-blog-api-ilfm.onrender.com/api/auth/login`, {
           username,
           password,
         })
