@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useContext } from "react";
 import {
   FaFacebookSquare,
@@ -9,12 +9,29 @@ import {
 } from "react-icons/fa";
 import { Link, useLocation } from "react-router-dom";
 import { Context } from "../context/Context";
+import axios from "axios";
 
 function Topbar() {
   const location = useLocation();
   const { user, dispatch } = useContext(Context);
+  const { users, setUsers } = useState();
+  const PF = "https://react-blog-api-ilfm.onrender.com/images/";
+
   // console.log(location);
   // console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      const fetchUsers = async () => {
+        await axios
+          .get(`https://react-blog-api-ilfm.onrender.com/api/users/${user._id}`)
+          .then((res) => {
+            setUsers(res.data.userWithoutPassword);
+          });
+      };
+      fetchUsers();
+    }
+  }, [user]);
 
   const pathMatchRoute = (route) => {
     if (route === location.pathname) {
@@ -97,7 +114,7 @@ function Topbar() {
               <a href={`/profile/${user._id}`}>
                 <img
                   src={
-                    user?.profilePicture ||
+                    PF + users?.profilePicture ||
                     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
                   }
                   alt="profile pic"

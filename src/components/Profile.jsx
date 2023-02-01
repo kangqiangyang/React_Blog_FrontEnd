@@ -1,7 +1,7 @@
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
-import { useLocation, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Context } from "../context/Context";
 
 function Profile() {
@@ -13,6 +13,25 @@ function Profile() {
   const { user, dispatch } = useContext(Context);
   const [file, setFile] = useState(null);
   const params = useParams();
+
+  const { users, setUsers } = useState();
+  const PF = "https://react-blog-api-ilfm.onrender.com/images/";
+
+  // console.log(location);
+  // console.log(user);
+
+  useEffect(() => {
+    if (user) {
+      const fetchUsers = async () => {
+        await axios
+          .get(`https://react-blog-api-ilfm.onrender.com/api/users/${user._id}`)
+          .then((res) => {
+            setUsers(res.data.userWithoutPassword);
+          });
+      };
+      fetchUsers();
+    }
+  }, [user]);
 
   const setProfilePicture = (e) => {
     const reader = new FileReader();
@@ -124,7 +143,7 @@ function Profile() {
                   onClick={() => {
                     setSelectedPic(false);
                   }}
-                  src={user.profilePicture}
+                  src={PF + users?.profilePicture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
                   alt=""
                   className="w-full h-full rounded-lg object-cover cursor-pointer"
                 />
