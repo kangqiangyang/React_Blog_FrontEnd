@@ -14,7 +14,7 @@ import axios from "axios";
 function Topbar() {
   const location = useLocation();
   const { user, dispatch } = useContext(Context);
-  const { users, setUsers } = useState();
+  const [users, setUsers] = useState();
   const PF = "https://react-blog-api-ilfm.onrender.com/images/";
 
   // console.log(location);
@@ -112,14 +112,19 @@ function Topbar() {
           {user ? (
             <>
               <a href={`/profile/${user._id}`}>
-                <img
-                  src={
-                    PF + users?.profilePicture ||
-                    "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
-                  }
-                  alt="profile pic"
-                  className="w-8 h-8 rounded-full cursor-pointer"
-                />
+                {users?.profilePicture ? (
+                  <img
+                    src={PF + users?.profilePicture}
+                    alt=""
+                    className="w-8 h-8 rounded-full cursor-pointer"
+                  />
+                ) : (
+                  <img
+                    src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                    alt=""
+                    className="w-8 h-8 rounded-full cursor-pointer"
+                  />
+                )}
               </a>
             </>
           ) : (

@@ -1,7 +1,7 @@
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { Context } from "../context/Context";
 
 function Profile() {
@@ -14,7 +14,7 @@ function Profile() {
   const [file, setFile] = useState(null);
   const params = useParams();
 
-  const { users, setUsers } = useState();
+  const [users, setUsers] = useState();
   const PF = "https://react-blog-api-ilfm.onrender.com/images/";
 
   // console.log(location);
@@ -33,6 +33,7 @@ function Profile() {
     }
   }, [user]);
 
+  // console.log(users);
   const setProfilePicture = (e) => {
     const reader = new FileReader();
     setFile(e.target.files[0]);
@@ -139,14 +140,27 @@ function Profile() {
                   className="w-full h-full rounded-lg object-cover cursor-pointer"
                 />
               ) : (
-                <img
-                  onClick={() => {
-                    setSelectedPic(false);
-                  }}
-                  src={PF + users?.profilePicture || "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"}
-                  alt=""
-                  className="w-full h-full rounded-lg object-cover cursor-pointer"
-                />
+                <>
+                  {users?.profilePicture ? (
+                    <img
+                      onClick={() => {
+                        setSelectedPic(false);
+                      }}
+                      src={PF + users?.profilePicture}
+                      alt=""
+                      className="w-full h-full rounded-lg object-cover cursor-pointer"
+                    />
+                  ) : (
+                    <img
+                      onClick={() => {
+                        setSelectedPic(false);
+                      }}
+                      src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+                      alt=""
+                      className="w-full h-full rounded-lg object-cover cursor-pointer"
+                    />
+                  )}
+                </>
               )}
             </div>
             <div>

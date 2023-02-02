@@ -35,7 +35,7 @@ function WritePage() {
     };
     if (file) {
       const formData = new FormData();
-      const filename = Date.now() + file.name;
+      const filename = file.name;
       formData.append("file", file);
       formData.append("filename", filename);
       newPost.photo = filename;
