@@ -3,6 +3,7 @@ import { useContext } from "react";
 import { GrAddCircle } from "react-icons/gr";
 import { Context } from "../context/Context";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 function WritePage() {
   const [SelectedImg, setSelectedImg] = useState(false);
@@ -27,34 +28,42 @@ function WritePage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const newPost = {
-      title: PostTitle,
-      description: PostDescription,
-      username: user.username,
-      categories: category,
-    };
+
     if (file) {
       const formData = new FormData();
-      const filename = file.name;
       formData.append("file", file);
-      formData.append("filename", filename);
-      newPost.photo = filename;
+      formData.append("upload_preset", "lgma4iur");
 
       try {
-        await axios.post(
-          "https://react-blog-api-ilfm.onrender.com/api/upload",
+        const uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dj5qwihzu/upload",
           formData
         );
-      } catch (error) {}
+        const { url } = uploadRes.data;
+
+        const newPost = {
+          title: PostTitle,
+          description: PostDescription,
+          username: user.username,
+          categories: category,
+          photo: url,
+        };
+        try {
+          const res = await axios.post(
+            `https://react-blog-api-ilfm.onrender.com/api/posts`,
+            newPost
+          );
+          toast.success("Blog Post Added Successfully");
+
+          window.location.replace(`/posts/${res.data.savePosts._id}`);
+          // console.log(res.data);
+        } catch (error) {
+          toast.error("Blog Post Added Failed");
+        }
+      } catch (error) {
+        toast.error("Blog Post Picture Added Failed");
+      }
     }
-    try {
-      const res = await axios.post(
-        `https://react-blog-api-ilfm.onrender.com/api/posts`,
-        newPost
-      );
-      window.location.replace(`/posts/${res.data.savePosts._id}`);
-      // console.log(res.data);
-    } catch (error) {}
   };
 
   const setPostImage = (e) => {

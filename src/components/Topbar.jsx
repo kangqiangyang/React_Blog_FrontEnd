@@ -15,7 +15,7 @@ function Topbar() {
   const location = useLocation();
   const { user, dispatch } = useContext(Context);
   const [users, setUsers] = useState();
-  const PF = "https://react-blog-api-ilfm.onrender.com/images/";
+  // const PF = "https://react-blog-api-ilfm.onrender.com/images/";
 
   // console.log(location);
   // console.log(user);
@@ -114,7 +114,7 @@ function Topbar() {
               <a href={`/profile/${user._id}`}>
                 {users?.profilePicture ? (
                   <img
-                    src={PF + users?.profilePicture}
+                    src={users?.profilePicture}
                     alt=""
                     className="w-8 h-8 rounded-full cursor-pointer"
                   />

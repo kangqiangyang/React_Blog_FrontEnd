@@ -5,7 +5,7 @@ import { MdDelete } from "react-icons/md";
 import { Context } from "../context/Context";
 
 function SinglePost({ post }) {
-  const PF = "https://react-blog-api-ilfm.onrender.com/images/";
+  // const PF = "https://react-blog-api-ilfm.onrender.com/images/";
   const { user } = useContext(Context);
   const [updateMode, setUpdateMode] = useState(false);
   const [PostTitle, setPostTitle] = useState(post?.title);
@@ -46,7 +46,7 @@ function SinglePost({ post }) {
     >
       {post?.photo && (
         <img
-          src={PF + post?.photo}
+          src={post?.photo}
           alt=""
           className="w-full mb-5 rounded-lg object-cover h-[30%] cursor-pointer hover:scale-105 transform ease-out duration-150"
         />

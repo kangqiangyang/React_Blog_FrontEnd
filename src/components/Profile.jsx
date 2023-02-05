@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
 import { useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import { Context } from "../context/Context";
 
 function Profile() {
@@ -15,7 +16,7 @@ function Profile() {
   const params = useParams();
 
   const [users, setUsers] = useState();
-  const PF = "https://react-blog-api-ilfm.onrender.com/images/";
+  // const PF = "https://react-blog-api-ilfm.onrender.com/images/";
 
   // console.log(location);
   // console.log(user);
@@ -61,10 +62,12 @@ function Profile() {
           )
           .then((res) => {
             dispatch({ type: "USER_DELETE_SUCCESS" });
+            toast.success("User Deleted Successfully");
           });
       }
     } catch (error) {
       dispatch({ type: "USER_DELETE_FAILURE" });
+      toast.error("Something Went Wrong");
     }
   };
 
@@ -72,41 +75,73 @@ function Profile() {
     e.preventDefault();
 
     dispatch({ type: "UPDATE_START" });
-    const updatedUser = {
-      userId: user._id,
-      username,
-      email,
-      password,
-    };
 
     if (file) {
       const formData = new FormData();
-      const filename = file.name;
       formData.append("file", file);
-      formData.append("filename", filename);
-      updatedUser.profilePicture = filename;
+      formData.append("upload_preset", "lgma4iur");
 
       try {
-        await axios.post(
-          `https://react-blog-api-ilfm.onrender.com/api/upload`,
+        const uploadRes = await axios.post(
+          "https://api.cloudinary.com/v1_1/dj5qwihzu/upload",
           formData
         );
-      } catch (error) {}
+        const { url } = uploadRes.data;
+
+        const updatedUser = {
+          userId: user._id,
+          username,
+          email,
+          password,
+          profilePicture: url,
+        };
+        try {
+          const res = await axios.put(
+            `https://react-blog-api-ilfm.onrender.com/api/users/` + user._id,
+            updatedUser
+          );
+          dispatch({ type: "UPDATE_SUCCESS", payload: res.data.updatedUser });
+          toast.success("Profile Updated");
+
+          window.location.reload("/");
+        } catch (error) {
+          dispatch({ type: "UPDATE_FAILURE" });
+          toast.error("Error Updating Profile");
+        }
+      } catch (error) {
+        console.log(error);
+        toast.error("Error Updating Profile Picture");
+      }
     }
 
-    try {
-      const res = await axios.put(
-        `https://react-blog-api-ilfm.onrender.com/api/users/` + user._id,
-        updatedUser
-      );
-      // console.log(res);
-      dispatch({ type: "UPDATE_SUCCESS", payload: res.data.updatedUser });
-      window.location.reload("/");
-    } catch (err) {
-      dispatch({ type: "UPDATE_FAILURE" });
-    }
+    // if (file) {
+    //   const formData = new FormData();
+    //   const filename = file.name;
+    //   formData.append("file", file);
+    //   formData.append("filename", filename);
+    //   updatedUser.profilePicture = filename;
+
+    //   try {
+    //     await axios.post(
+    //       `https://react-blog-api-ilfm.onrender.com/api/upload`,
+    //       formData
+    //     );
+    //   } catch (error) {}
+    // }
+
+    // try {
+    //   const res = await axios.put(
+    //     `https://react-blog-api-ilfm.onrender.com/api/users/` + user._id,
+    //     updatedUser
+    //   );
+    //   // console.log(res);
+    //   dispatch({ type: "UPDATE_SUCCESS", payload: res.data.updatedUser });
+    //   window.location.reload("/");
+    // } catch (err) {
+    //   dispatch({ type: "UPDATE_FAILURE" });
+    // }
   };
-  console.log(user);
+  // console.log(user);
   // console.log(params);
 
   // console.log(ProfilePic);
@@ -146,7 +181,7 @@ function Profile() {
                       onClick={() => {
                         setSelectedPic(false);
                       }}
-                      src={PF + users?.profilePicture}
+                      src={users?.profilePicture}
                       alt=""
                       className="w-full h-full rounded-lg object-cover cursor-pointer"
                     />

@@ -5,7 +5,7 @@ import TimeAgo from "react-timeago";
 function Post({ post }) {
   // console.log(post);
   const navigate = useNavigate();
-  const PF = "https://react-blog-api-ilfm.onrender.com/images/";
+  // const PF = "https://react-blog-api-ilfm.onrender.com/images/";
   // console.log(post.photo);
   return (
     <div
@@ -14,7 +14,7 @@ function Post({ post }) {
     >
       {post?.photo && (
         <img
-          src={PF + post?.photo}
+          src={post?.photo}
           alt=""
           className="w-full object-cover h-[60%] hover:scale-105 transform ease-out duration-150"
         />
